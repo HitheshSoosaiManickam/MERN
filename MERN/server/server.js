@@ -1,6 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const UserModel = require('./User')
+const mongoose = require('mongoose')
 app.use(cors())
 app.use(express.json())
 //Create API End Points (HTTP Request,Response)
@@ -12,3 +14,12 @@ const PORT = 8000
 app.listen(PORT, ()=>{
 console.log(`Server running on  http://localhost:8000`)
 })
+mongoose.connect('mongodb://127.0.0.1:27017/Company')
+.then(() => console.log('DB connected'))
+.catch(err => console.log(err))
+//Register API Route
+app.post('/register',(req,res)=>{
+    UserModel.create(req.body)
+    .then(res.json('Data Saved Successfully'))
+    .catch(err=>res.json(err))
+    })
